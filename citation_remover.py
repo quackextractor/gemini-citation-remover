@@ -10,10 +10,8 @@ def process_text(content):
     Cleans citation tags, fixes formatting issues caused by them,
     and automatically repairs common markdown structural errors.
     """
-    # 1. Pull up citation tags that got pushed to a new line to fix broken headings/sentences
+    # 1. Pull up citation tags that got pushed to a new line
     content = re.sub(r'\n[ \t]*(\[(?:cite_start|cite_end|cite:|source:)[^\]]*\])', r' \1', content)
-    
-    # Run a second time just in case multiple tags were stacked on separate newlines
     content = re.sub(r'\n[ \t]*(\[(?:cite_start|cite_end|cite:|source:)[^\]]*\])', r' \1', content)
     
     # 2. Remove all the citation tags completely
@@ -21,47 +19,47 @@ def process_text(content):
     content = re.sub(pattern, '', content)
     
     # 3. Autofix Markdown issues
-    # Fix detached bullet points (an asterisk on one line, bold text on the next)
     content = re.sub(r'\*\s*\n\s*\*\*', '* **', content)
-    
-    # Fix collapsed sub-bullets (a bullet immediately following a colon on the same line)
     content = re.sub(r'(?<=:)\s*\*\s*\*\*', '\n  * **', content)
-    
-    # Remove excessive vertical spacing (reduce 3 or more newlines down to 2)
     content = re.sub(r'\n{3,}', '\n\n', content)
     
-    # 4. Clean up multiple horizontal spaces left behind
+    # 4. Clean up spaces
     content = re.sub(r'[ \t]+', ' ', content)
-    
-    # 5. Remove trailing spaces right before a new line
     content = re.sub(r'[ \t]+\n', '\n', content)
     
     return content.strip()
 
+def ensure_out_folder():
+    """Ensures the /out directory exists."""
+    out_path = os.path.join(os.getcwd(), 'out')
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+    return out_path
+
 def clean_citations_in_file(filepath):
     """
-    Creates a backup and removes citation markings from the given file.
+    Processes the file and saves the cleaned version to the /out folder.
     """
     try:
-        backup_path = filepath + '.bak'
-        shutil.copy2(filepath, backup_path)
+        out_dir = ensure_out_folder()
+        filename = os.path.basename(filepath)
+        output_path = os.path.join(out_dir, filename)
 
         with open(filepath, 'r', encoding='utf-8', errors='ignore') as file:
             content = file.read()
 
         cleaned_content = process_text(content)
 
-        with open(filepath, 'w', encoding='utf-8') as file:
+        with open(output_path, 'w', encoding='utf-8') as file:
             file.write(cleaned_content)
             
-        return True, "Success"
+        return True, f"Saved to out/{filename}"
     except Exception as e:
         return False, str(e)
 
 def clean_pasted_text(event=None):
     """
-    Grabs text from the clipboard, cleans citations, saves to a fixed file,
-    and copies the cleaned text back to the clipboard.
+    Cleans clipboard text and saves it to out/pasted-no-citation.txt.
     """
     try:
         content = window.clipboard_get()
@@ -70,17 +68,18 @@ def clean_pasted_text(event=None):
             return
 
         cleaned_content = process_text(content)
-
-        output_filename = "pasted-no-citation.txt"
+        
+        out_dir = ensure_out_folder()
+        output_filename = os.path.join(out_dir, "pasted-no-citation.txt")
+        
         with open(output_filename, 'w', encoding='utf-8') as file:
             file.write(cleaned_content)
             
-        # Copy the cleaned text back to the system clipboard
         window.clipboard_clear()
         window.clipboard_append(cleaned_content)
-        window.update() # Required on some systems to finalize clipboard operations
+        window.update()
             
-        messagebox.showinfo("Success", f"Successfully cleaned pasted text, saved to {output_filename}, and copied back to your clipboard.")
+        messagebox.showinfo("Success", f"Cleaned text saved to out/pasted-no-citation.txt and copied to clipboard.")
         
     except tk.TclError:
         messagebox.showwarning("Error", "No text found in clipboard.")
@@ -88,11 +87,7 @@ def clean_pasted_text(event=None):
         messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
 def on_drop(event):
-    """
-    Handles the drop event, processes each dropped file, and shows a summary.
-    """
     file_paths = window.tk.splitlist(event.data)
-    
     success_count = 0
     error_messages = []
 
@@ -109,10 +104,9 @@ def on_drop(event):
         errors = "\n".join(error_messages)
         messagebox.showwarning("Completed with errors", f"Processed {success_count} files.\n\nErrors:\n{errors}")
     elif success_count > 0:
-        messagebox.showinfo("Success", f"Successfully cleaned {success_count} file(s).")
+        messagebox.showinfo("Success", f"Successfully cleaned {success_count} file(s) into the /out folder.")
 
-
-# Initialize the main window using TkinterDnD
+# UI Setup
 window = TkinterDnD.Tk()
 window.title("Citation Remover & Markdown Fixer")
 window.geometry("400x300")
