@@ -1,7 +1,7 @@
 # Citation Remover & Markdown Fixer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](https://github.com/quackextractor/gemini-citation-remover)
+[![Version](https://img.shields.io/badge/version-0.1.3-blue.svg)](https://github.com/quackextractor/gemini-citation-remover)
 
 A simple Python-based GUI application to clean citation tags and fix common markdown formatting issues from text files or clipboard content.
 

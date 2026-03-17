@@ -1,8 +1,5 @@
 import os
 import re
-import tkinter as tk
-from tkinter import messagebox
-from tkinterdnd2 import DND_FILES, TkinterDnD
 
 
 def process_text(content):
@@ -65,6 +62,8 @@ def clean_pasted_text(event=None):
     """
     Cleans clipboard text and saves it to out/pasted-no-citation.txt.
     """
+    import tkinter as tk
+    from tkinter import messagebox
     try:
         content = window.clipboard_get()
         if not content.strip():
@@ -110,18 +109,22 @@ def on_drop(event):
                 error_messages.append(f"{filename}: {msg}")
 
     if error_messages:
+        from tkinter import messagebox
         errors = "\n".join(error_messages)
         messagebox.showwarning(
             "Completed with errors",
             f"Processed {success_count} files.\n\nErrors:\n{errors}"
         )
     elif success_count > 0:
+        from tkinter import messagebox
         msg = f"Successfully cleaned {success_count} file(s) into /out."
         messagebox.showinfo("Success", msg)
 
 
 def setup_ui():
     """Sets up the Tkinter application."""
+    import tkinter as tk
+    from tkinterdnd2 import DND_FILES, TkinterDnD
     global window
     window = TkinterDnD.Tk()
     window.title("Citation Remover & Markdown Fixer")
@@ -151,6 +154,7 @@ def setup_ui():
     drop_label.dnd_bind('<<Drop>>', on_drop)
 
     window.bind('<Control-v>', clean_pasted_text)
+    window.bind('<Control-V>', clean_pasted_text)
     window.bind('<Command-v>', clean_pasted_text)
 
     return window

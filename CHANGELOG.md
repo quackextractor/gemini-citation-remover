@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-03-17
+
+### Fixed
+- CI failure where `pytest` could not find the `citation_remover` module. Fixed by using `python -m pytest` in the GitHub Actions workflow.
+
+### Changed
+- Refactored `citation_remover.py` to move `tkinter` and `tkinterdnd2` imports inside of functions. This allows the core logic to be imported and tested in headless environments without requiring Tcl/Tk system libraries.
+- Added `<Control-V>` (uppercase) keyboard shortcut binding for pasting.
+
 ## [0.1.2] - 2026-03-17
 
 ### Added
