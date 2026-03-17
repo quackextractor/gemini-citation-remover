@@ -13,14 +13,8 @@ if not exist "%VENV_DIR%\Scripts\activate.bat" (
 REM Activate the virtual environment
 call "%VENV_DIR%\Scripts\activate.bat"
 
-REM Check if tkinterdnd2 is installed
-pip show tkinterdnd2 >nul 2>&1
-if errorlevel 1 (
-    echo [2/3] Installing tkinterdnd2...
-    pip install tkinterdnd2
-) else (
-    echo [2/3] Library tkinterdnd2 is already installed.
-)
+REM Install requirements
+pip install -r requirements.txt
 
 REM Run the python script
 if exist "%SCRIPT_NAME%" (
