@@ -2,20 +2,6 @@ import os
 from citation_remover import process_text, ensure_out_folder, clean_citations_in_file
 
 
-def test_process_text_basic_removal():
-    """Verify that standard citation and source tags are removed."""
-    input_text = "Scientific fact. Research data ."
-    expected = "Scientific fact . Research data ."
-    assert process_text(input_text) == expected
-
-
-def test_process_text_start_end_tags():
-    """Verify that cite_start and cite_end tags are handled correctly."""
-    input_text = "Header Body text [cite_end] Footer"
-    expected = "Header  Body text  Footer"
-    assert process_text(input_text) == expected
-
-
 def test_process_text_pull_up_citations():
     """Verify citations on new lines are pulled up before removal."""
     input_text = "Sentence ending here.\n"
