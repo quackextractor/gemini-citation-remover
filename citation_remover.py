@@ -1,11 +1,11 @@
 import os
 import re
 
-
 def process_text(content):
     """
     Cleans citation tags, fixes formatting issues caused by them,
-    and automatically repairs common markdown structural errors.
+    and automatically repairs common markdown structural errors
+    while preserving code indentation.
     """
     # 1. Pull up citation tags that got pushed to a new line
     cite_pat = r'\n[ \t]*(\[(?:cite_start|cite_end|cite:|source:)[^\]]*\])'
@@ -21,11 +21,13 @@ def process_text(content):
     content = re.sub(r'(?<=:)\s*\*\s*\*\*', '\n  * **', content)
     content = re.sub(r'\n{3,}', '\n\n', content)
 
-    # 4. Clean up spaces
-    content = re.sub(r'[ \t]+', ' ', content)
-    content = re.sub(r'[ \t]+\n', '\n', content)
+    # 4. Clean up trailing spaces (Fixed to preserve indentation)
+    # Using MULTILINE flag to target the end of each line safely
+    content = re.sub(r'[ \t]+$', '', content, flags=re.MULTILINE)
 
-    return content.strip()
+    # Keep .rstrip() instead of .strip() to avoid removing deliberate
+    # starting whitespace at the very beginning of the document
+    return content.rstrip()
 
 
 def ensure_out_folder():
