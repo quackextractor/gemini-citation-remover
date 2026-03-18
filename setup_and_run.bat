@@ -17,6 +17,14 @@ REM Install requirements
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 
+:: Setup and run pre-commit
+echo.
+echo Setting up pre-commit hooks...
+pre-commit install
+
+echo Running pre-commit checks on all files...
+pre-commit run --all-files
+
 REM Run the python script
 if exist "%SCRIPT_NAME%" (
     echo [3/3] Launching %SCRIPT_NAME%...
@@ -27,3 +35,4 @@ if exist "%SCRIPT_NAME%" (
 )
 
 deactivate
+pause

@@ -1,6 +1,7 @@
 import os
 import re
 
+
 def process_text(content):
     """
     Cleans citation tags, fixes formatting issues caused by them,

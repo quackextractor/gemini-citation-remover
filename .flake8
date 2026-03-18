@@ -6,4 +6,4 @@ exclude =
     .venv,
     out,
     tests/__pycache__
-max-line-length = 120
+max-line-length = 200
