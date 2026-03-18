@@ -15,6 +15,7 @@ call "%VENV_DIR%\Scripts\activate.bat"
 
 REM Install requirements
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
 REM Run the python script
 if exist "%SCRIPT_NAME%" (

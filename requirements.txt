@@ -1,3 +1,1 @@
-tkinterdnd2==0.4.2
-flake8
-pytest
+tkinterdnd2
