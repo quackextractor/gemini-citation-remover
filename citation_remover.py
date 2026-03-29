@@ -8,18 +8,19 @@ def process_text(content):
     and automatically repairs common markdown structural errors
     while preserving code indentation.
     """
-    # 1. Pull up citation tags that got pushed to a new line
-    cite_pat = r'\n[ \t]*(\[(?:cite_start|cite_end|cite:|source:)[^\]]*\])'
-    content = re.sub(cite_pat, r' \1', content)
-    content = re.sub(cite_pat, r' \1', content)
+    # 1. Pull up citation tags that got pushed to a single new line.
+    # Captures the preceding non-newline character (\1) to prevent
+    # matching double newlines (which denote paragraph breaks).
+    cite_pat = r'([^\n\r])[ \t]*\r?\n[ \t]*(\[(?:cite_start|cite_end|cite:|source:)[^\]]*\])'
+    content = re.sub(cite_pat, r'\1 \2', content)
+    content = re.sub(cite_pat, r'\1 \2', content)
 
     # 2. Remove all the citation tags completely
     pattern = r'\[(?:cite_start|cite_end|cite:[^\]]*|source:[^\]]*)\]'
     content = re.sub(pattern, '', content)
 
     # 3. Autofix Markdown issues
-    content = re.sub(r'\*\s*\n\s*\*\*', '* **', content)
-    content = re.sub(r'(?<=:)\s*\*\s*\*\*', '\n  * **', content)
+    # Standardize multiple empty lines into a standard paragraph break
     content = re.sub(r'\n{3,}', '\n\n', content)
 
     # 4. Clean up trailing spaces (Fixed to preserve indentation)
