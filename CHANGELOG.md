@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-03-29
+
+### Fixed
+* **Resolved Header Merging**: Corrected an issue where double newlines (paragraph breaks) following headers were being incorrectly stripped, causing headers and body text to merge onto a single line.
+* **Refined Citation Pull-up Logic**: Updated the `cite_pat` regular expression to use a capture group for preceding non-newline characters, ensuring only single line breaks are targeted while preserving intentional structural spacing.
+* **Removed Aggressive Markdown Autofix**: Eliminated destructive formatting rules that forced indentation on bulleted lists following colons, which previously broke the layout of the **Output** and **Features** sections.
+* **Standardized Line Breaks**: Implemented a safer approach to condense excessive whitespace into standard paragraph breaks without compromising the overall document hierarchy.
+
 ## [0.1.5] - 2026-03-18
 
 ### Changed
