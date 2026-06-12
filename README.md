@@ -5,6 +5,8 @@
 
 A simple Python-based GUI application to clean citation tags and fix common markdown formatting issues from text files or clipboard content.
 
+> Note: Project has gotten redundant, since Google patched this in most applications. Could still come in handy in cases where this issue hasn't been patched yet (such as Gemini inside of Google Workspace).
+
 ## Features
 
 - **Remove Citations**: Completely removes tags like `[cite_start]`, `[cite_end]`, `[cite:...]`, and `[source:...]`.
