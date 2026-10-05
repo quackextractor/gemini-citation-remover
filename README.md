@@ -5,7 +5,9 @@
 
 A simple Python-based GUI application to clean citation tags and fix common markdown formatting issues from text files or clipboard content.
 
-### The project has become redundant now that Google has patched the citation issue in most of its applications.
+### ~~The project has become redundant now that Google has patched the citation issue in most of its applications.~~
+### Okay nevermind, it's (unfortunately) still very viable
+
 It may still provide value in environments where the issue persists, such as Gemini within Google Workspace.
 
 ## Features
